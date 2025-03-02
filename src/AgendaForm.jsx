@@ -9,6 +9,8 @@ const AgendaForm = () => {
   const [group, setGroup] = useState('');
   const [duration, setDuration] = useState('');
   const [activities, setActivities] = useState('');
+
+  // Estados para el Snackbar (mensaje)
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -23,16 +25,19 @@ const AgendaForm = () => {
         activities,
         createdAt: new Date()
       });
+      // Mostramos mensaje de éxito
       setSnackbarSeverity('success');
       setSnackbarMessage('¡Agenda guardada exitosamente!');
       setOpenSnackbar(true);
-      // Limpiar campos
+
+      // Limpiamos campos
       setTitle('');
       setGroup('');
       setDuration('');
       setActivities('');
     } catch (error) {
       console.error("Error al guardar la agenda:", error);
+      // Mostramos mensaje de error
       setSnackbarSeverity('error');
       setSnackbarMessage('Error al guardar la agenda');
       setOpenSnackbar(true);
@@ -94,7 +99,14 @@ const AgendaForm = () => {
             Guardar Agenda
           </Button>
         </form>
-        <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
+
+        {/* Snackbar para mostrar mensajes de éxito/error */}
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={3000}
+          onClose={handleCloseSnackbar}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
           <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
             {snackbarMessage}
           </Alert>

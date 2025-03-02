@@ -1,10 +1,9 @@
 // src/AgendaList.jsx
 import React, { useState, useEffect } from 'react';
-import { db } from './firebase';
 import { collection, query, orderBy, onSnapshot, deleteDoc, doc } from 'firebase/firestore';
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Button, Snackbar, Alert } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EditAgendaDialog from './EditAgendaDialog';
+import { db } from './firebase';
 
 const AgendaList = () => {
   const [agendas, setAgendas] = useState([]);
@@ -55,7 +54,10 @@ const AgendaList = () => {
       </Typography>
       {agendas.map(agenda => (
         <Accordion key={agenda.id}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <AccordionSummary
+            // Reemplazamos el icono con un span que contiene la flecha ▼
+            expandIcon={<span style={{ fontSize: '24px' }}>▼</span>}
+          >
             <Typography variant="h6">{agenda.title}</Typography>
             <Typography variant="body2" sx={{ marginLeft: 'auto' }}>
               {new Date(agenda.createdAt.seconds * 1000).toLocaleDateString()}
@@ -93,6 +95,5 @@ const AgendaList = () => {
     </div>
   );
 };
-
 
 export default AgendaList;

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Snackbar, Alert } from '@mui/material';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from './firebase';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 
 const EditAgendaDialog = ({ open, agenda, onClose }) => {
   const [title, setTitle] = useState(agenda.title);

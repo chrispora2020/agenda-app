@@ -1,79 +1,106 @@
-// src/AgendaForm.js
+// src/AgendaForm.jsx
 import React, { useState } from 'react';
+import { TextField, Button, Card, CardContent, Typography, Snackbar, Alert } from '@mui/material';
 import { db } from './firebase';
+import { collection, addDoc } from 'firebase/firestore';
 
 const AgendaForm = () => {
-  // Estados para cada campo
   const [title, setTitle] = useState('');
   const [group, setGroup] = useState('');
   const [duration, setDuration] = useState('');
   const [activities, setActivities] = useState('');
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
-  // Función para guardar la agenda en Firestore
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await db.collection('agendas').add({
+      await addDoc(collection(db, 'agendas'), {
         title,
         group,
         duration: Number(duration),
         activities,
         createdAt: new Date()
       });
-      alert("¡Agenda guardada!");
+      setSnackbarSeverity('success');
+      setSnackbarMessage('¡Agenda guardada exitosamente!');
+      setOpenSnackbar(true);
       // Limpiar campos
       setTitle('');
       setGroup('');
       setDuration('');
       setActivities('');
     } catch (error) {
-      console.error("Error al guardar la agenda: ", error);
-      alert("Error al guardar la agenda");
+      console.error("Error al guardar la agenda:", error);
+      setSnackbarSeverity('error');
+      setSnackbarMessage('Error al guardar la agenda');
+      setOpenSnackbar(true);
     }
-  }
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setOpenSnackbar(false);
+  };
 
   return (
-    <div>
-      <h2>Crear Agenda</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Título:</label>
-          <input
-            type="text"
+    <Card sx={{ maxWidth: 500, margin: '20px auto', backgroundColor: '#f0f8ff' }}>
+      <CardContent>
+        <Typography variant="h5" gutterBottom>
+          Crear Agenda
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Título"
+            variant="outlined"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
           />
-        </div>
-        <div>
-          <label>Grupo (Ej: Primaria, Guardería):</label>
-          <input
-            type="text"
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Grupo (Ej: Primaria, Guardería)"
+            variant="outlined"
             value={group}
             onChange={(e) => setGroup(e.target.value)}
             required
           />
-        </div>
-        <div>
-          <label>Duración (minutos):</label>
-          <input
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Duración (minutos)"
+            variant="outlined"
             type="number"
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
             required
           />
-        </div>
-        <div>
-          <label>Actividades (detalles):</label>
-          <textarea
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Actividades (detalles)"
+            variant="outlined"
+            multiline
+            rows={4}
             value={activities}
             onChange={(e) => setActivities(e.target.value)}
             required
-          ></textarea>
-        </div>
-        <button type="submit">Guardar Agenda</button>
-      </form>
-    </div>
+          />
+          <Button variant="contained" color="primary" type="submit" sx={{ marginTop: 2 }}>
+            Guardar Agenda
+          </Button>
+        </form>
+        <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
+          <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
+      </CardContent>
+    </Card>
   );
 };
 

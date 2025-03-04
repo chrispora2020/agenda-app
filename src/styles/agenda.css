@@ -1,0 +1,21 @@
+/* src/styles/agenda.css */
+.agenda-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  
+  /* Estilos para móviles */
+  @media (max-width: 600px) {
+    .agenda-container {
+      padding: 10px;
+      margin: 10px;
+    }
+    .agenda-title {
+      font-size: 2rem;
+    }
+  }
+  

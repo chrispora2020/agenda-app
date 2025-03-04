@@ -1,63 +1,71 @@
 // src/pages/AgendasPage.jsx
-import React, { useState } from 'react';
-import AgendaList from '../components/AgendaList';
-import AgendaView from '../components/AgendaView';
+import React, { useState, useEffect } from 'react';
+import { db } from '../firebase';
+import { collection, query, onSnapshot, orderBy } from 'firebase/firestore';
+import { Typography, Card, CardContent, List, ListItem, ListItemText, Button } from '@mui/material';
 import AgendaForm from '../components/AgendaForm';
 
 const AgendasPage = () => {
+  const [agendas, setAgendas] = useState([]);
   const [selectedAgenda, setSelectedAgenda] = useState(null);
   const [showForm, setShowForm] = useState(false);
-  const [year, setYear] = useState(new Date().getFullYear());
-  const [month, setMonth] = useState(new Date().getMonth() + 1);
 
-  const handleSelectAgenda = (agenda) => {
-    setSelectedAgenda(agenda);
-    setShowForm(false);
-  };
+  useEffect(() => {
+    const q = query(collection(db, 'agendas'), orderBy('createdAt', 'desc'));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const items = [];
+      snapshot.forEach(doc => {
+        items.push({ id: doc.id, ...doc.data() });
+      });
+      setAgendas(items);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleNewAgenda = () => {
     setSelectedAgenda(null);
     setShowForm(true);
   };
 
-  const handleSave = () => {
-    // Cuando se guarde, puedes refrescar la lista o cerrar el form
+  const handleEditAgenda = (agenda) => {
+    setSelectedAgenda(agenda);
+    setShowForm(true);
+  };
+
+  const handleSaved = () => {
     setShowForm(false);
+    setSelectedAgenda(null);
   };
 
   return (
-    <div style={{ display: 'flex', gap: '20px' }}>
-      {/* Lado Izquierdo: Lista de agendas */}
-      <div style={{ flex: 1 }}>
-        <h2>Agendas del Mes</h2>
-        <label>Año: </label>
-        <input
-          type="number"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-        />
-        <label>Mes: </label>
-        <input
-          type="number"
-          value={month}
-          onChange={(e) => setMonth(e.target.value)}
-        />
-        <button onClick={handleNewAgenda}>Nueva Agenda</button>
-        <AgendaList
-          year={year}
-          month={month}
-          onSelectAgenda={handleSelectAgenda}
-        />
-      </div>
-
-      {/* Lado Derecho: Vista o Form */}
-      <div style={{ flex: 1 }}>
-        {showForm ? (
-          <AgendaForm agendaToEdit={selectedAgenda} onSave={handleSave} />
-        ) : (
-          <AgendaView agenda={selectedAgenda} />
-        )}
-      </div>
+    <div>
+      <Typography variant="h5" sx={{ mb: 2 }}>
+        Lista de Agendas
+      </Typography>
+      <Button variant="contained" onClick={handleNewAgenda} sx={{ mb: 2 }}>
+        Nueva Agenda
+      </Button>
+      {showForm ? (
+        <AgendaForm agendaToEdit={selectedAgenda} onSave={handleSaved} />
+      ) : (
+        <Card>
+          <CardContent>
+            <List>
+              {agendas.map(agenda => (
+                <ListItem key={agenda.id} sx={{ borderBottom: '1px solid #ccc' }}>
+                  <ListItemText
+                    primary={`Agenda para ${agenda.sunday || ''}`}
+                    secondary={agenda.anuncios || ''}
+                  />
+                  <Button variant="text" onClick={() => handleEditAgenda(agenda)}>
+                    Editar
+                  </Button>
+                </ListItem>
+              ))}
+            </List>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };

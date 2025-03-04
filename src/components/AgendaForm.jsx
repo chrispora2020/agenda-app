@@ -155,8 +155,7 @@ const AgendaForm = ({ agendaToEdit, onSave }) => {
 
   // Buscar un niño por ID
   const findChildById = (id) => allChildren.find((c) => c.id === id) || null;
-  // Buscar himno por ID
-  const findMusicById = (id) => allMusic.find((m) => m.id === id) || null;
+
 
   return (
     <Card sx={{ mb: 2 }}>

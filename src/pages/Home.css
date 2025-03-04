@@ -1,0 +1,14 @@
+/* src/Home.css */
+.home-container {
+    background-image: url('https://assets.ldscdn.org/94/3f/943f4bb28221d101b2048cefcc7a4303ce77b0d9/children_app_icon.png');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: rgb(14, 13, 13);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+  }
+  

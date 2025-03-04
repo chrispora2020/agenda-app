@@ -1,0 +1,67 @@
+/* Estructura general de la agenda */
+.agenda-container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff; /* Fondo blanco para texto legible */
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    position: relative;
+    /* Podrías poner una imagen de fondo floral semitransparente aquí si lo deseas */
+    /* background: url('ruta-a-tu-fondo-floral.png') no-repeat center; */
+    /* background-size: cover; */
+  }
+  
+  .agenda-title {
+    font-family: 'Amatic SC', cursive; /* Ejemplo de fuente decorativa */
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    color: #5e8d63; /* Ajusta el color a tu gusto */
+  }
+  
+  .agenda-date {
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+  
+  .agenda-section {
+    background-color: #fdfdfd;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #eee;
+    border-radius: 8px;
+  }
+  
+  .agenda-section h4 {
+    margin-top: 0;
+    font-weight: bold;
+  }
+  
+  .agenda-row {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+  }
+  
+  /* Ajuste de cajas */
+  .small-box {
+    flex: 1;
+  }
+  .medium-box {
+    flex: 1;
+  }
+  
+  /* Para que cada caja se ajuste si hay muchas en una línea */
+  .agenda-section p, .agenda-section ul {
+    margin: 0.5rem 0;
+  }
+  
+  /* Ajuste responsive */
+  @media (max-width: 768px) {
+    .agenda-row {
+      flex-direction: column;
+    }
+  }
+  

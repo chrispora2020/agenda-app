@@ -1,0 +1,38 @@
+/* Agenda.css */
+
+/* Ajustes de la portada */
+.cover-container {
+    position: relative;
+    text-align: center;
+    color: #fff;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .cover-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    filter: brightness(0.8);
+  }
+  
+  .cover-title {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+  }
+  
+  .cover-subtitle {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+  }
+  
